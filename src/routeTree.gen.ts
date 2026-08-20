@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RescueRouteImport } from './routes/rescue'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as WorkRouteImport } from './routes/work'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RescueRoute = RescueRouteImport.update({
+  id: '/rescue',
+  path: '/rescue',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StudyRoute = StudyRouteImport.update({
@@ -31,30 +37,34 @@ const WorkRoute = WorkRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
   '/work': typeof WorkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
   '/work': typeof WorkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
   '/work': typeof WorkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/study' | '/work'
+  fullPaths: '/' | '/rescue' | '/study' | '/work'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/study' | '/work'
-  id: '__root__' | '/' | '/study' | '/work'
+  to: '/' | '/rescue' | '/study' | '/work'
+  id: '__root__' | '/' | '/rescue' | '/study' | '/work'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RescueRoute: typeof RescueRoute
   StudyRoute: typeof StudyRoute
   WorkRoute: typeof WorkRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rescue': {
+      id: '/rescue'
+      path: '/rescue'
+      fullPath: '/rescue'
+      preLoaderRoute: typeof RescueRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/study': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RescueRoute: RescueRoute,
   StudyRoute: StudyRoute,
   WorkRoute: WorkRoute,
 }
