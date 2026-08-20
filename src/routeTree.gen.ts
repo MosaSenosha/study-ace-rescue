@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RescueRouteImport } from './routes/rescue'
 import { Route as StudyRouteImport } from './routes/study'
@@ -18,6 +19,11 @@ import { Route as WorkRouteImport } from './routes/work'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgressRoute = ProgressRouteImport.update({
@@ -43,6 +49,7 @@ const WorkRoute = WorkRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/rescue': typeof RescueRoute
   '/study': typeof StudyRoute
@@ -65,14 +74,16 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/progress' | '/rescue' | '/study' | '/work'
+  fullPaths: '/' | '/profile' | '/progress' | '/rescue' | '/study' | '/work'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/progress' | '/rescue' | '/study' | '/work'
-  id: '__root__' | '/' | '/progress' | '/rescue' | '/study' | '/work'
+  to: '/' | '/profile' | '/progress' | '/rescue' | '/study' | '/work'
+  id:
+    '__root__' | '/' | '/profile' | '/progress' | '/rescue' | '/study' | '/work'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   RescueRoute: typeof RescueRoute
   StudyRoute: typeof StudyRoute
@@ -86,6 +97,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress': {
@@ -121,6 +139,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   RescueRoute: RescueRoute,
   StudyRoute: StudyRoute,
